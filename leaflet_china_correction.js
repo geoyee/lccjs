@@ -43,6 +43,24 @@ L.CoordConver = function () {
             lat: mgLat
         };
     }
+    
+    /*gcj02 -> bd09*/
+    this.GCJ02ToBD09 = function (x, y) {
+        var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+        var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+        var bd_lng = z * Math.cos(theta) + 0.0065;
+        var bd_lat = z * Math.sin(theta) + 0.006;
+        return {
+            lng: bd_lng,
+            lat: bd_lat
+        };
+    }
+    
+    /*wgs84 -> bd09*/
+    this.WGS84ToBD09 = function (lng, lat) {
+        var gcj02 = this.WGS84ToGCJ02(lng, lat);
+        return this.GCJ02ToBD09(gcj02.lng, gcj02.lat);
+    }
 
     function transformLat(x, y) {
         var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
@@ -76,6 +94,8 @@ L.GridLayer.include({
         if (center != undefined && this.options) {
             if (this.options['cnCrs'] == 'gcj02') {
                 center = L.coordConver().WGS84ToGCJ02(_center.lng, _center.lat);
+            } else if (this.options['cnCrs'] == 'bd09') {
+                center = L.coordConver().WGS84ToBD09(_center.lng, _center.lat);
             }
         }
         var scale = this._map.getZoomScale(zoom, level.zoom),
@@ -95,6 +115,8 @@ L.GridLayer.include({
         if (center != undefined && this.options) {
             if (this.options['cnCrs'] == 'gcj02') {
                 center = L.coordConver().WGS84ToGCJ02(_center.lng, _center.lat);
+            } else if (this.options['cnCrs'] == 'bd09') {
+                center = L.coordConver().WGS84ToBD09(_center.lng, _center.lat);
             }
         }
         var map = this._map,
