@@ -72,9 +72,9 @@ L.coordConver = function () {
 L.GridLayer.include({
     _setZoomTransform: function (level, _center, zoom) {
         var center = _center;
-        console.log(this.options)
+        // console.log(this.options)
         if (center != undefined && this.options) {
-            if (this.options['cn_crs'] == 'gcj02') {
+            if (this.options['cnCrs'] == 'gcj02') {
                 center = L.coordConver().WGS84ToGCJ02(_center.lng, _center.lat);
             }
         }
@@ -91,9 +91,9 @@ L.GridLayer.include({
     
     _getTiledPixelBounds: function (_center) {
         var center = _center;
-        console.log(this.options)
+        // console.log(this.options)
         if (center != undefined && this.options) {
-            if (this.options['cn_crs'] == 'gcj02') {
+            if (this.options['cnCrs'] == 'gcj02') {
                 center = L.coordConver().WGS84ToGCJ02(_center.lng, _center.lat);
             }
         }
