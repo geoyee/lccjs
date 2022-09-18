@@ -19,6 +19,7 @@ L.CoordConver = function () {
     var pi = 3.1415926535897932384626;
     var a = 6378245.0;
     var ee = 0.00669342162296594323;
+    var x_pi = pi * 3000.0 / 180.0;
 
     /*wgs84 -> gcj02*/
     this.WGS84ToGCJ02 = function (lng, lat) {
